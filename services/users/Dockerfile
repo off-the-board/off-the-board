@@ -8,10 +8,10 @@ RUN apk update && \
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-COPY ./requirements.txt /usr/src/app/requirements.txt
+ADD ./requirements.txt /usr/src/app/requirements.txt
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
-COPY . /usr/src/app
+ADD . /usr/src/app
 
 RUN chmod +x /usr/src/app/entry-point.sh
 

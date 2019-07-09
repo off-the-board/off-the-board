@@ -23,33 +23,32 @@ jobs:
     steps:
       - checkout
 
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "requirements.txt" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
       - run:
           name: Install Docker Compose
           command: |
             curl -L https://github.com/docker/compose/releases/download/1.23.2/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
             chmod +x ~/docker-compose
             sudo mv ~/docker-compose /usr/local/bin/docker-compose
+
       - setup_remote_docker:
           version: 18.06.0-ce
+
       - run:
           name: Build container
           command: |
             set -x
             docker-compose up --build -d
+
       - run:
           name: Run tests
           command: |
             docker-compose exec users python manage.py test
+
       - run:
           name: Teardown container
           command: |
             docker-compose down
+
       - store_artifacts:
           path: test-reports
           destination: test-reports

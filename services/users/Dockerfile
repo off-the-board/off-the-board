@@ -15,6 +15,4 @@ ADD . /usr/src/app
 
 RUN chmod +x /usr/src/app/entry-point.sh
 
-LABEL com.circleci.preserve-entrypoint=true
-
 CMD ["./entry-point.sh"]

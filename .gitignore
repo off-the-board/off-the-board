@@ -6,6 +6,7 @@ __pycache__
 *.html
 *.so
 *.pyc
+.coverage
 
 # Distribution / packaging
 .Python

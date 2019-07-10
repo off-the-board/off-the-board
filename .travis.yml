@@ -1,0 +1,30 @@
+dist: xenial
+language: python
+python:
+  - "3.7"
+
+sudo: required
+
+services:
+  - docker
+
+env:
+  DOCKER_COMPOSE_VERSION: 1.23.2
+  REACT_APP_USERS_SERVICE_URL: http://127.0.0.
+
+before_install:
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+
+before_script:
+  - export REACT_APP_USERS_SERVICE_URL=${REACT_APP_USERS_SERVICE_URL}
+  - docker-compose up -d --build
+
+script:
+  - docker-compose exec users python manage.py test
+  - docker-compose exec clientt npm test
+
+after_script:
+  - docker-compose down

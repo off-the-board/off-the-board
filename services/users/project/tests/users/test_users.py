@@ -122,6 +122,16 @@ class TestUserService(BaseTestCase):
             self.assertIn("User does not exist", data["message"])
             self.assertIn("fail", data["status"])
 
+    def test_all_users(self):
+        """Ensure get all users behaves correctly."""
+        user_1 = add_user(username="dgood", email="danielgoodman5425@gmail.com").to_json()
+        user_2 = add_user(username="cking", email="cking@gmail.com").to_json()
+        with self.client:
+            response = self.client.get("/users")
+            data = json.loads(response.data.decode())
+            self.assertEquals(response.status_code, 200)
+            self.assertEquals(len(data["data"]["users"]), 2)
+
 
 if __name__ == "__main__":
     unittest.main()
